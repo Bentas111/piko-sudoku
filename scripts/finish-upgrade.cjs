@@ -1,0 +1,18 @@
+const fs=require('node:fs');
+let a=fs.readFileSync('src/app.js','utf8');
+a=a.replace('let saveOK=true;', 'let saveOK=true,readBlocked=false;');
+a=a.replace('if(normalized)family=normalized;}catch(e){saveOK=false;}', 'if(normalized)family=normalized;else if(read!==null){saveOK=false;readBlocked=true;}}catch(e){saveOK=false;readBlocked=true;}');
+a=a.replace('function save(){try{', 'function save(){if(readBlocked){saveOK=false;return;}try{');
+a=a.replace("case 'reset':family.profiles", "case 'reset':delete family.legacyBackup;family.profiles");
+a=a.replace("const P=window.PikoProgress",`const stories={pets:['Pomóż zwierzakom odnaleźć dom.','Help the pets find their home.'],ocean:['Odkryj mieszkańców podwodnej zatoki.','Discover the creatures of the underwater bay.'],vehicles:['Przygotuj pojazdy do wielkiej podróży.','Get the vehicles ready for a big trip.'],fruit:['Zbierz obrazki do owocowego koszyka.','Collect pictures for the fruit basket.'],dinosaurs:['Odszukaj ślady w dolinie dinozaurów.','Find tracks in the dinosaur valley.'],space:['Odkryj kolejne przystanki kosmicznej wyprawy.','Discover the next stops on a space journey.'],farm:['Odnajdź przyjaciół na farmie.','Find your friends on the farm.'],forest:['Sprawdź, kto mieszka na leśnej polanie.','Discover who lives in the forest clearing.'],safari:['Poznaj mieszkańców słonecznej sawanny.','Meet the animals of the sunny savanna.'],birds:['Odkryj ptaki z różnych zakątków świata.','Discover birds from around the world.'],garden:['Wypełnij ogród nowymi odkryciami.','Fill the garden with new discoveries.'],fantasy:['Odnajdź przyjaciół w bajkowej krainie.','Find friends in a magical land.']};
+const story=w=>stories[w][family.lang==='pl'?0:1];
+const P=window.PikoProgress`);
+a=a.replace("L('Odnajdź przyjaciół','Find your friends')", "L('Odkryj swój świat','Discover your world')");
+a=a.replace("${L('Każda wyprawa to trzy małe kroki. Wybierz obrazek i pomóż mu dotrzeć do domu.','Each adventure has three small steps. Pick a picture and help it find its home.')}","${story(w.id)} ${L('Każda wyprawa to trzy małe kroki.','Each adventure has three small steps.')}");
+a=a.replace('<main class="game-layout"><div>${board}', '<main class="game-layout"><div>${a.mission?`<aside class="mission-scene"><p>${story(world().id)} · ${a.mission.step}/3</p>${Array.from({length:3},(_,i)=>img(world().symbols[(a.mission.chapter+i)%9],i<a.mission.step?\'\':\'undiscovered\')).join(\'\')}</aside>`:\'\'}${board}');
+fs.writeFileSync('src/app.js',a);
+let test=fs.readFileSync('src/test-app.cjs','utf8').replace("PikoEngine:E,addEventListener", "PikoEngine:E,PikoProgress:require('./progress.js'),addEventListener");
+fs.writeFileSync('src/test-app.cjs',test);
+let te=fs.readFileSync('src/test-engine.cjs','utf8').replaceAll('w.symbols.length,6','w.symbols.length,9').replaceAll('s.id)).size,6','s.id)).size,9').replace('D.puzzles.length,240','D.puzzles.length,270').replace('assets:72','assets:108');
+te=te.replace("assert.equal(E.groups(2).length,4)","assert.equal(E.groups(9).length,27);assert(E.groups(9).every(g=>g.cells.length===9));assert(D.puzzles.filter(p=>p.size===9).every(p=>E.logicalSolve(p).solved));assert.equal(E.groups(2).length,4)");
+fs.writeFileSync('src/test-engine.cjs',te);

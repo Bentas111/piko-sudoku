@@ -1,0 +1,31 @@
+{
+  "name": "piko-sudoku-mobile",
+  "version": "0.6.0",
+  "private": true,
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "sync": "npm run build && cap sync",
+    "test": "node src/test-engine.cjs && node src/test-app.cjs && node --test tests/*.test.cjs",
+    "android": "cap open android",
+    "ios": "cap open ios",
+    "check:release": "node scripts/check-release.mjs"
+  },
+  "dependencies": {
+    "@capacitor-community/admob": "8.1.0",
+    "@capacitor/android": "8.5.2",
+    "@capacitor/app": "8.1.1",
+    "@capacitor/core": "8.5.2",
+    "@capacitor/ios": "8.5.2",
+    "@capacitor/preferences": "8.0.1",
+    "@capgo/native-purchases": "^8.7.0"
+  },
+  "devDependencies": {
+    "@capacitor/cli": "8.5.2",
+    "esbuild": "0.28.2"
+  },
+  "overrides": {
+    "xcode": {
+      "uuid": "11.1.1"
+    }
+  }
+}

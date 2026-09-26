@@ -1,0 +1,18 @@
+{
+  "appId": "pl.niekazmuliczyc.piko",
+  "appName": "Piko Sudoku",
+  "webDir": "www",
+  "backgroundColor": "#FFF9EF",
+  "android": {
+    "allowMixedContent": false
+  },
+  "ios": {
+    "contentInset": "automatic",
+    "includePlugins": [
+      "@capacitor-community/admob",
+      "@capacitor/app",
+      "@capacitor/preferences",
+      "@capgo/native-purchases"
+    ]
+  }
+}
